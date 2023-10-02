@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="HU">
+    <head>
+        <meta charset="UTF-8">
+        <title>X O X O</title>
+        <link href='https://fonts.googleapis.com/css?family=Press Start 2P' rel='stylesheet'>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="AmobaCSS.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    </head>
+        <style>
+            /*
+        -------------------Játék Pálya---------------------------------------
+            #palya{
+                display:grid;
+                grid-template-columns: repeat(3,auto);
+                text-align:center; /*EZEK MARADNAK !!!
+                margin: auto;
+            }
+            .cella{
+                width:100px;
+                height:100px;
+                border:1px solid;   
+                font-size:80px;   Meg ez is
+                cursor:pointer; 
+                box-shadow:0 0 0 2px; 
+                background-color: yellow;
+            }
+            
+            .palya5x5{
+                display:grid;
+                grid-template-columns: repeat(5,auto); 
+                margin:auto;
+                text-align:center; 	
+            }
+            .cella5x5{
+                width:60px;
+                height:60px;
+                border:1px solid;
+                font-size:50px;
+                cursor:pointer; 
+                box-shadow:0 0 0 2px;  
+                background-color: yellow;
+            }
+            .palya10x10{
+                display:grid;
+                grid-template-columns: repeat(10,auto); 
+                margin:auto;
+                text-align:center; 
+            }
+            .cella10x10{
+                width:30px;
+                height:30px;
+                border:1px solid;
+                font-size:20px;
+                cursor:pointer; 
+                box-shadow:0 0 0 2px; 
+                background-color: yellow;
+            }*/
+        </style>
+        <body>
+            <div  id="cim"><p id="cimSzoveg">X Amőba O</p></div>
+        <div id="menu">
+           <span id="jatek" class="gombok">Játék</span>
+           <span id="info" class="gombok">Infó</span><div id="infoPapir"><span class="udv">Üdv!</span><br>
+            Ez egy klasszikus amőba játék egy kicsit tovább gondolva.<br>
+            Mielőtt elkezdtek játszani adnotok kell magatoknak nevet, szín és azt, hogy ki lesz az első aki lép , valamint megadhatjátok mekkora pályán szeretnétek megmérkőzni.
+            <br>
+            Lépés idő limitet is megadhatok ezt az "Idő" gombra kattinva tudjátok megtenni.
+            <br>
+            Ha valakinek elfogy az ideje akkor automatikusan a másik kap pontot!<br>
+            A nyerő mintát egy oszlopba , egy sorba vagy átlósan kell kirakni.
+            3x3-ason 3-at, 5x5-ösön 4-et , 10x10-esen 5-öt.<br>
+            <span class="udv">jó szórakozást!</span> </div>
+            <script>
+                $("#infoPapir").hide();
+                $('.udv').css('text-transform', 'uppercase');
+                $(".udv").css("text-align", "center");
+
+                $("#info").click(function(){
+                    $(this).next("#infoPapir").slideToggle(500);
+                })
+            </script>
+        </div>
+
+        <!------------Játékosok Beállítása---------------------------------->
+        <div id="kulsoKon" class="kontener">
+            <div id="belsoKon" class="kontener">
+                <div class="szimbTarolo">
+                    <div class="Szimbolumok">
+                        <p id="xSzimbolum" class="magSzimbolum">X</p>
+                        <div class="szinTarolo" id="xSzinTarolo">
+                            <input type="color" class="jatekosSzin" id="xSzin">
+                        </div>
+                        <div class="nevTarolo">                              
+                            <input type="text" class="jatekosNev" id="xNev" placeholder="Írd ide a neved!">
+                        </div>
+                            <input type="checkbox" id="kezdX" class="checkbox">
+                            <label for="kezdX" class="toggle"><p id="kezdoLabelX" class="kezdoLabel">Kezd</p></label>
+                   </div>
+                </div>
+                <div id="kozep">
+                    <span class="gombok" id="startGomb">Játék</span>
+                    <span class="gombok" id="visszaGomb" >Vissza</span>
+                    <div class="valasztok"id="idoGomb">Idő</div>
+                        <ul id="idoLista">
+                            <li class="idoElem">5</li>
+                            <li class="idoElem">10</li>
+                            <li class="idoElem">20</li>
+                            <li class="idoElem">30</li>
+                        </ul>
+                    <div class="valasztok" id="palyaValaszto">Pálya</div>  
+                        <ul id="palyaLista">
+                            <li class="palyaElem">3x3</li>
+                            <li class="palyaElem">5x5</li>
+                            <li class="palyaElem">10x10</li>
+                        </ul>
+                </div>
+                <div class="szimbTarolo">
+                    <div class="Szimbolumok">  
+                        <p id="oSzimbolum" class="magSzimbolum">O</p>                           
+                        <div class="szinTarolo" id="oSzinTarolo">
+                            <input type="color" class="jatekosSzin" id="oSzin">
+                        </div>
+                        <div class="nevTarolo">                                
+                            <input type="text" class="jatekosNev" id="oNev" placeholder="Írd ide a neved!">
+                        </div> 
+                            <input type="checkbox" id="kezdO" class="checkbox">
+                            <label for="kezdO" class="toggle"><p id="kezdoLabelO" class="kezdoLabel"></p></label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!------------Amőba Pálya---------------------------------------------------------------->
+        <div id="jatekTarolo">
+            <div class="kijelzo">
+                <p class="idoKijelzo" id="xIdo"></p>
+                <div class="nevTaroloPalya">
+                    <p class="jatekosNevPalya" id="xNevPalya"></p>
+                </div>
+                    <p class="szimbolumokPalya" id="XszimbolumPalya">X</p>
+                    <label for="Xeredmeny" class="eredmenyLabel">Eredmény: </label>
+                    <p class="eredmeny" id="Xeredmeny">0</p>
+                </div>
+            <div id="palyaTarolo">
+                <div id="kovetkezo">
+                    <p id="visszajelzes"></p>
+                </div>
+                <div id="palya"> <!--Itt adja majd hozzá a pálya cellákat-->
+                </div>
+                <div id="gombTarolo">
+                    <span class="gombok" id="ujraindit">Újra</span>
+                    <span class="gombok" id="visszaSzimbolum">Vissza</span>
+                </div>
+            </div>
+            <div class="kijelzo">
+                <p class="idoKijelzo" id="oIdo"></p>
+                <div class="nevTaroloPalya">
+                    <p class="jatekosNevPalya" id="oNevPalya"></p>
+                </div>
+                <p class="szimbolumokPalya" id="OszimbolumPalya">O</p>
+                <label for="Oeredmeny">Eredmény: </label>
+                <p class="eredmeny" id="Oeredmeny">0</p>
+            </div>
+        </div>
+    </body>
+        <script src="AmobaJS.js"></script>
+</html>
