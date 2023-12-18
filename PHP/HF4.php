@@ -27,9 +27,6 @@ dob, akkor az objektum nem jön létre)-->
         public $jobb;
 
         public function __construct($bal, $jobb){
-            if(!isset($bal) || !isset($jobb)){
-                throw new ArgumentCountError();
-            }
             if($bal > $jobb){
                 throw new balNagyobb();
             }
@@ -40,9 +37,6 @@ dob, akkor az objektum nem jön létre)-->
             return "[$this->bal, $this->jobb]";
         }
         public function benneVan($szam){
-            if(!isset($szam)){
-                throw new ArgumentCountError();
-            }
             if($this->bal < $szam && $szam < $this->jobb){
                 echo "<p>A(z) $szam benne van.";
                 return true;
